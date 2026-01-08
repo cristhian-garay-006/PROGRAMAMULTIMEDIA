@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido - Instituto Federal Alemán</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            /* background: radial-gradient(circle at center, #1a2a6c, #b21f1f, #fdbb2d); Remove old vibrant gradient */
+            /* animation: gradient 15s ease infinite; Remove animation */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Removed @keyframes gradient */
+
+        /* Removed Particle Background styles */
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem 4rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            /* transform: translateY(20px); */
+            /* opacity: 0; */
+            /* animation: slideUp 0.8s ease forwards; Removed entrance animation */
+        }
+
+        /* Removed @keyframes slideUp */
+
+        h1 {
+            color: #fff;
+            margin-bottom: 3rem;
+            font-weight: 300;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .options {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .option-btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        /* Removed .option-btn:hover */
+
+        .option-btn i {
+            font-size: 1.4rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- particles canvas removed -->
+
+    <div class="container">
+        <h1>Bienvenido</h1>
+        <div class="options">
+            <button onclick="loadContent('juego/index.html')" class="option-btn">
+                <i class="fas fa-puzzle-piece"></i> Jugar
+            </button>
+            <button onclick="loadContent('system.html')" class="option-btn">
+                <i class="fas fa-desktop"></i> Ver el sistema
+            </button>
+        </div>
+    </div>
+
+    <!-- Iframe Container -->
+    <iframe id="content-frame"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; border:none; z-index:100; background: #000;"></iframe>
+
+    <script>
+        // Particle System JS removed
+
+        // iframe Navigation Logic
+        function loadContent(url) {
+            const frame = document.getElementById('content-frame');
+            const container = document.querySelector('.container');
+
+            frame.src = url;
+            frame.style.display = 'block';
+
+            // Hide the landing content logic if desired, or just cover it
+            // We'll hide the container to prevent interaction
+            container.style.display = 'none';
+        }
+
+        // Listen for messages from iframe to close itself (optional robust way)
+        window.addEventListener('message', function (event) {
+            if (event.data === 'closeFrame') {
+                const frame = document.getElementById('content-frame');
+                const container = document.querySelector('.container');
+                frame.style.display = 'none';
+                frame.src = '';
+                container.style.display = 'block';
+                // Trigger animation again simply by being visible
+            }
+        });
+    </script>
+</body>
+
+</html>
