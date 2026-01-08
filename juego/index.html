@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--
+	NOTES:
+	1. All tokens are represented by '$' sign in the template.
+	2. You can write your code only wherever mentioned.
+	3. All occurrences of existing tokens will be replaced by their appropriate values.
+	4. Blank lines will be removed automatically.
+	5. Remove unnecessary comments before creating your template.
+-->
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="authoring-tool" content="Adobe_Animate_CC">
+	<title>garayv3 (1)</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<style>
+		.back-btn {
+			position: fixed;
+			top: 20px;
+			left: 20px;
+			padding: 10px 20px;
+			background: rgba(255, 255, 255, 0.9);
+			border: 2px solid #333;
+			border-radius: 25px;
+			text-decoration: none;
+			color: #333;
+			font-family: 'Segoe UI', sans-serif;
+			font-weight: bold;
+			z-index: 1000;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			transition: all 0.3s ease;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		.back-btn:hover {
+			background: #333;
+			color: #fff;
+			transform: translateY(-2px);
+			box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+		}
+	</style>
+	<!-- write your code here -->
+	<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+	<script src="garayv3 (1).js"></script>
+	<script>
+		var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+		function init() {
+			canvas = document.getElementById("canvas");
+			anim_container = document.getElementById("animation_container");
+			dom_overlay_container = document.getElementById("dom_overlay_container");
+			var comp = AdobeAn.getComposition("901EAD1765481E44B1CBFF034E123773");
+			var lib = comp.getLibrary();
+			var loader = new createjs.LoadQueue(false);
+			loader.addEventListener("fileload", function (evt) { handleFileLoad(evt, comp) });
+			loader.addEventListener("complete", function (evt) { handleComplete(evt, comp) });
+			var lib = comp.getLibrary();
+			loader.loadManifest(lib.properties.manifest);
+		}
+		function handleFileLoad(evt, comp) {
+			var images = comp.getImages();
+			if (evt && (evt.item.type == "image")) { images[evt.item.id] = evt.result; }
+		}
+		function handleComplete(evt, comp) {
+			//This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
+			var lib = comp.getLibrary();
+			var ss = comp.getSpriteSheet();
+			var queue = evt.target;
+			var ssMetadata = lib.ssMetadata;
+			for (i = 0; i < ssMetadata.length; i++) {
+				ss[ssMetadata[i].name] = new createjs.SpriteSheet({ "images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames })
+			}
+			exportRoot = new lib.garayv31();
+			stage = new lib.Stage(canvas);
+			//Registers the "tick" event listener.
+			fnStartAnimation = function () {
+				stage.addChild(exportRoot);
+				createjs.Ticker.framerate = lib.properties.fps;
+				createjs.Ticker.addEventListener("tick", stage);
+			}
+			//Code to support hidpi screens and responsive scaling.
+			AdobeAn.makeResponsive(false, 'both', false, 1, [canvas, anim_container, dom_overlay_container]);
+			AdobeAn.compositionLoaded(lib.properties.id);
+			fnStartAnimation();
+		}
+	</script>
+	<!-- write your code here -->
+</head>
+
+<body onload="init();" style="margin:0px;">
+	<a href="#" onclick="window.parent.postMessage('closeFrame', '*'); return false;" class="back-btn">
+		<i class="fas fa-arrow-left"></i> Regresar
+	</a>
+	<div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:550px; height:400px">
+		<canvas id="canvas" width="550" height="400"
+			style="position: absolute; display: block; background-color:rgba(255, 255, 255, 1.00);"></canvas>
+		<div id="dom_overlay_container"
+			style="pointer-events:none; overflow:hidden; width:550px; height:400px; position: absolute; left: 0px; top: 0px; display: block;">
+		</div>
+	</div>
+	<div id="congrats-overlay"
+		style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; justify-content:center; align-items:center; flex-direction:column; color:white; text-align:center;">
+		<h1 style="font-size:3rem; margin-bottom:20px; color:#00f260; text-shadow: 0 0 10px rgba(0,242,96,0.5);">
+			¡Felicitaciones!</h1>
+		<p style="font-size:1.5rem; margin-bottom:30px;">Has completado el rompecabezas.</p>
+		<button onclick="location.reload()"
+			style="padding:10px 30px; font-size:1.2rem; cursor:pointer; background:#00f260; border:none; border-radius:5; color:black; font-weight:bold;">Jugar
+			de nuevo</button>
+		<a href="#" onclick="window.parent.postMessage('closeFrame', '*'); return false;"
+			style="margin-top:20px; color:white; text-decoration:underline;">Volver al menú</a>
+	</div>
+	<script>
+		function mostrarFelicitaciones() {
+			var overlay = document.getElementById("congrats-overlay");
+			overlay.style.display = "flex";
+
+			// Optional: Add simple confetti or sound here if requested later
+		}
+	</script>
+</body>
+
+</html>
